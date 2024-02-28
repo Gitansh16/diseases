@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Example</title>
+</head>
+<body>
+    <h1>WebSocket Example</h1>
+    <div id="messages"></div>
+    <script>
+        const socket = new WebSocket('ws://localhost:8765');
+
+        socket.addEventListener('open', (event) => {
+            console.log('WebSocket connection opened');
+
+            // Example: Send a message to the server
+            const sentMessage = 'Hello Server!';
+            socket.send(sentMessage);
+            console.log(`Sent message to server: ${sentMessage}`);
+            displayMessage(`Sent message to server: ${sentMessage}`);
+        });
+
+        socket.addEventListener('message', (event) => {
+            const receivedMessage = `Message from server: ${event.data}`;
+            console.log(receivedMessage);
+            displayMessage(receivedMessage);
+        });
+
+        socket.addEventListener('close', (event) => {
+            console.log('WebSocket connection closed');
+        });
+
+        function displayMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const messageParagraph = document.createElement('p');
+            messageParagraph.textContent = message;
+            messagesDiv.appendChild(messageParagraph);
+        }
+    </script>
+</body>
+</html>
